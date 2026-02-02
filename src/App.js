@@ -1,31 +1,38 @@
+import { useState } from "react";
+
 export default function Board() {
-  return(
+  return (
     <div>
       <div className="board-row">
-        <Square value="1" />
-        <Square value="2"/>
-        <Square value="3"/>
+        <Square />
+        <Square />
+        <Square />
       </div>
       <div className="board-row">
-        <Square value="4"/>
-        <Square value="5"/>
-        <Square value="6"/>
+        <Square />
+        <Square />
+        <Square />
       </div>
       <div className="board-row">
-        <Square value="7"/>
-        <Square value="8"/>
-        <Square value="9"/>
-      </div>      
+        <Square />
+        <Square />
+        <Square />
+      </div>
     </div>
-  )
-};
+  );
+}
 
-function Square({value}) {
-  function handleClick(){
-    value = "X"
-  };
+function Square() {
+  const [value, setValue] = useState(null);
+  const [rotate, setRotate] = useState(true);
+  function handleClick() {
+    setRotate(false);
+    setValue(rotate);
+  }
 
-  return(
-    <button className="square" onClick={handleClick}>{value}</button>
-  )
+  return (
+    <button className="square" onClick={handleClick}>
+      {value}
+    </button>
+  );
 }
