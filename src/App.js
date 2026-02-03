@@ -26,8 +26,12 @@ function Square() {
   const [value, setValue] = useState(null);
   const [rotate, setRotate] = useState(true);
   function handleClick() {
-    setRotate(false);
-    setValue(rotate);
+    if(rotate){
+      setValue("⚪︎")
+    }else{
+      setValue("×")     
+    }
+    setRotate(!rotate);
   }
 
   return (
