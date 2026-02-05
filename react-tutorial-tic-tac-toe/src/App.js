@@ -25,11 +25,20 @@ const moves = history.map((squares, move)=>{
   }else{
     description = "Go to game start";
   }
-  return(
-    <li key={move}>
-      <button onClick={()=>jumpTo(move)}>{description}</button>
-    </li>
-)
+  if(move === currentMove){
+    return(
+      <li key={move}>
+        <h2>You are at move # {move}</h2>
+      </li>
+    )    
+  }else{
+    return(
+      <li key={move}>
+       <button onClick={()=>jumpTo(move)}>{description}</button>
+      </li>
+    )
+  }
+
 });
 
   return(
@@ -90,6 +99,7 @@ function Board({xIsNext, squares, onPlay}) {
   }
   return null;
 }
+
   return (
     <div>
       <div className="status">{status}</div>
