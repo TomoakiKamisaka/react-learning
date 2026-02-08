@@ -4,7 +4,10 @@ export default function Game(){
   const [xIsNext , setXIsNext] = useState(true);
   const [history,setHistory] = useState([Array(9).fill(null)]);
   const [currentMove, setCurrentMove] = useState(0);
+  const [isAscending, setIsAscending] = useState(true);
   const currentSquares = history[currentMove];
+
+
 
 
 function handlePlay(nextSquares){
@@ -37,9 +40,9 @@ const moves = history.map((squares, move)=>{
        <button onClick={()=>jumpTo(move)}>{description}</button>
       </li>
     )
-  }
+  }});
 
-});
+  const sortedMoves = isAscending ? moves : moves.reverse();
 
   return(
     <div>
@@ -49,9 +52,15 @@ const moves = history.map((squares, move)=>{
         </div>
         <div className="game-info">
           <ol>
-            {moves}
+            {sortedMoves}
           </ol>
         </div>
+          <button onClick={()=>{setIsAscending(!isAscending)}}>
+            {isAscending ? '昇順' : '降順'}
+          </button>
+          {/* <button onClick={() => setIsAscending(!isAscending)}>
+            {isAscending ? '昇順 ↑' : '降順 ↓'}
+          </button> */}
       </div>
     </div>
   )
