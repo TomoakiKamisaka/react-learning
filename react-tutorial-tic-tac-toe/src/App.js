@@ -123,9 +123,12 @@ function Board({ xIsNext, squares, onPlay }) {
   let status;
   if (winner) {
     status = "Winner: " + winner;
-  } else {
+  } else if(squares.every(square => square !== null)){
+    status = "引き分け";
+  }else {
     status = "Next Player: " + (xIsNext ? "X" : "O");
   }
+
 
   //1~9のSquareの配置
   const boardRows = [0, 1, 2].map((row) => {
