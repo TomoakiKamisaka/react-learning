@@ -20,11 +20,27 @@ export default function Game() {
     setXIsNext(nextMove % 2 === 0);
   }
 
+  //前後差分のindexを探す
+  function findChangeSquare(prevSquares, currentSquares){
+    for (let i = 0; i < 9; i++){
+        if(prevSquares[i] !== currentSquares[i]){
+          return i; //変更されたindexを返す
+        }
+    }
+    return null;
+  }
+
   //movesの表示
   const moves = history.map((squares, move) => {
     let description;
     if (move > 0) {
-      description = "Go to move #" + move;
+      const prevSquares = history[move - 1]; //1つ前のsquaresの状態
+      const changedIndex = findChangeSquare(prevSquares, squares); //前後差分のindexを探す
+      const row = Math.floor(changedIndex / 3); // 行の特定
+      const col = changedIndex % 3; // 列の特定
+
+      // description = "Go to move #" + move + "(" + row + "," +  col + ")";
+      description = `Go to move # ${move} (${row} , ${col})`;
     } else {
       description = "Go to game start";
     }
@@ -44,7 +60,7 @@ export default function Game() {
   });
 
   //ソート順の昇順、降順のmovesの表示順
-  const sortedMoves = isAscending ? moves : moves.reverse();
+  const sortedMoves = isAscending ? moves : [...moves].reverse();
 
   return (
     <div>
