@@ -79,7 +79,7 @@ function ProgramSlotRow(){
 //番組情報
 function ProgramInfo(){
   return(
-    <div classNme="programInfo">
+    <div className="programInfo">
       <h3>モーニングニュース</h3>
       <p>7:00-8:00</p>
       <p>0/6</p>
@@ -91,7 +91,7 @@ function ProgramInfo(){
 function AdSoldCard(){
   return(
     <div classNme="adSoldCard">
-      <text>空枠1</text>
+      <span>空枠1</span>
     </div>
   )
 }
