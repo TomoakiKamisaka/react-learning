@@ -7,13 +7,9 @@ export default function App() {
   return (
     <>
       {/* ヘッダー */}
-      <div className="Header">
-        <h1>CM広告枠管理システム</h1>
-      </div>
+      <h1>CM広告枠管理システム</h1>
       {/* メインコンテンツ */}
-      <div className="Body">
-        <CMSlotManagementBoard />
-      </div>
+      <CMSlotManagementBoard />
     </>
   );
 }
@@ -21,11 +17,11 @@ export default function App() {
 //CMローテーション管理ボード
 function CMSlotManagementBoard() {
   return (
-    <div className="cMSlotManagementBoard">
+    <>
       <AdvertiserSearchBar />
       <AvailableAdvertiserPool />
       <ProgramScheduleGrid />
-    </div>
+    </>
   );
 }
 
@@ -94,13 +90,13 @@ function AdvertiserTagList() {
 // 番組スケジュールグリッド
 function ProgramScheduleGrid() {
   return (
-    <div className="ProgramArea">
+    <>
       <h3>番組一覧</h3>
       <ProgramSlotRow programName="朝のニュース" time="7:00-8:00" />
       <ProgramSlotRow programName="情報バラエティ" time="9:00-10:00" />
       <ProgramSlotRow programName="昼のドラマ" time="12:00-13:00" />
       <ProgramSlotRow programName="夕方ニュース" time="18:00-19:00" />
-    </div>
+    </>
   );
 }
 
@@ -149,11 +145,11 @@ function ProgramSlotRow({ programName, time }) {
 // 番組情報
 function ProgramInfo({ programName, time }) {
   return (
-    <div className="programInfo">
+    <>
       <h3>{programName}</h3>
       <p>{time}</p>
       <p>0/6</p>
-    </div>
+    </>
   );
 }
 
@@ -172,7 +168,7 @@ function AdSlotCard({ slotNumber }) {
         justifyContent: "center",
         bgcolor: "grey.50",
         color: "grey.500",
-        fontSize: 14
+        fontSize: 14,
       }}
     >
       <span>空枠{slotNumber}</span>
