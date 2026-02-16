@@ -4,33 +4,41 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
 const ADVERTISERS = [
-  {AdvertiserId:"000001" , Name:"サントリー", ArrangeFlag:true},
-  {AdvertiserId:"000002" , Name:"トヨタ", ArrangeFlag:true},
-  {AdvertiserId:"000003" , Name:"ソニー", ArrangeFlag:true},
-  {AdvertiserId:"000004" , Name:"パナソニック", ArrangeFlag:true},
-  {AdvertiserId:"000005" , Name:"日清食品", ArrangeFlag:true},
-  {AdvertiserId:"000006" , Name:"キリン", ArrangeFlag:true}
+  { AdvertiserId: "000001", Name: "サントリー", ArrangeFlag: true },
+  { AdvertiserId: "000002", Name: "トヨタ", ArrangeFlag: true },
+  { AdvertiserId: "000003", Name: "ソニー", ArrangeFlag: true },
+  { AdvertiserId: "000004", Name: "パナソニック", ArrangeFlag: true },
+  { AdvertiserId: "000005", Name: "日清食品", ArrangeFlag: true },
+  { AdvertiserId: "000006", Name: "キリン", ArrangeFlag: true },
+];
+
+const PROGRAMS = [
+  { programName: "朝のニュース", time: "7:00-8:00" },
+  { programName: "情報バラエティ", time: "9:00-10:00" },
+  { programName: "昼のドラマ", time: "12:00-13:00" },
+  { programName: "夕方ニュース", time: "18:00-19:00" },
 ];
 
 export default function App() {
   return (
     <>
       {/* ヘッダー */}
-      <h1 style={{backgroundColor: "#6ec2f0", color: "white"}}>CM広告枠管理システム</h1>
+      <h1 style={{ backgroundColor: "#6ec2f0", color: "white" }}>
+        CM広告枠管理システム
+      </h1>
       {/* メインコンテンツ */}
-      <CMSlotManagementBoard Advertisers={ADVERTISERS}/>
+      <CMSlotManagementBoard />
     </>
   );
 }
 
 //CMローテーション管理ボード
-function CMSlotManagementBoard({Advertisers}) {
-
+function CMSlotManagementBoard() {
   return (
     <>
-      <AdvertiserSearchBar/>
-      <AvailableAdvertiserPool Advertisers={Advertisers}/>
-      <ProgramScheduleGrid />
+      <AdvertiserSearchBar />
+      <AvailableAdvertiserPool Advertisers={ADVERTISERS} />
+      <ProgramScheduleGrid ProgramList={PROGRAMS} />
     </>
   );
 }
@@ -38,7 +46,7 @@ function CMSlotManagementBoard({Advertisers}) {
 // 検索バー
 function AdvertiserSearchBar() {
   return (
-    <Box sx={{ width: 500, maxWidth: "100%"}}>
+    <Box sx={{ width: 500, maxWidth: "100%" }}>
       <TextField
         fullWidth
         id="outlined-basic"
@@ -50,27 +58,30 @@ function AdvertiserSearchBar() {
 }
 
 // 配置可能広告主プール
-function AvailableAdvertiserPool({Advertisers}) {
+function AvailableAdvertiserPool({ Advertisers }) {
   return (
     <>
       <h3>利用可能な広告主(ドラッグして配置)</h3>
-      <AdvertiserTagList Advertisers={Advertisers}/>
+      <AdvertiserTagList Advertisers={Advertisers} />
     </>
   );
 }
 
 // 広告主タグ一覧
-  function AdvertiserTagList({Advertisers}) {
+function AdvertiserTagList({ Advertisers }) {
+  // 広告主リストから各広告主の行コンポーネントを生成
+  const freeAdvertisers = Advertisers.map((advertiser) => {
+    if(advertiser.ArrangeFlag){
+      return (
+        <Grid size="auto">
+          <Button variant="outlined" fullWidth>
+            {advertiser.Name}
+          </Button>
+        </Grid>
+      );
+    }
 
-  const freeAdvertisers = Advertisers.map((advertiser)=>{
-    return(
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          {advertiser.Name}
-        </Button>
-      </Grid>
-    )
-  })
+  });
 
   return (
     <Grid container spacing={1}>
@@ -80,14 +91,18 @@ function AvailableAdvertiserPool({Advertisers}) {
 }
 
 // 番組スケジュールグリッド
-function ProgramScheduleGrid() {
+function ProgramScheduleGrid({ ProgramList }) {
+  // 番組リストから各番組の行コンポーネントを生成
+  const AkiProgramList = ProgramList.map((Program) => {
+    return (
+      <ProgramSlotRow programName={Program.programName} time={Program.time} />
+    );
+  });
+
   return (
     <>
       <h3>番組一覧</h3>
-      <ProgramSlotRow programName="朝のニュース" time="7:00-8:00" />
-      <ProgramSlotRow programName="情報バラエティ" time="9:00-10:00" />
-      <ProgramSlotRow programName="昼のドラマ" time="12:00-13:00" />
-      <ProgramSlotRow programName="夕方ニュース" time="18:00-19:00" />
+      {AkiProgramList}
     </>
   );
 }
