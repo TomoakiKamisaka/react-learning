@@ -70,24 +70,31 @@ function AvailableAdvertiserPool({ Advertisers }) {
 // 広告主タグ一覧
 function AdvertiserTagList({ Advertisers }) {
   // 広告主リストから各広告主の行コンポーネントを生成
-  const freeAdvertisers = Advertisers.map((advertiser) => {
-    if (advertiser.ArrangeFlag) {
-      return (
-        <Grid size="auto" key={advertiser.AdvertiserId}>
+  // const freeAdvertisers = Advertisers.map((advertiser) => {
+  //   if (advertiser.ArrangeFlag) {
+  //     return (
+  //       <Grid size="auto" key={advertiser.AdvertiserId}>
+  //         <Button variant="outlined" fullWidth>
+  //           {advertiser.Name}
+  //         </Button>
+  //       </Grid>
+  //     );
+  const freeAdvertisers = Advertisers
+    .filter((advertiser) => advertiser.ArrangeFlag)
+    .map((advertiser) => (
+         <Grid size="auto" key={advertiser.AdvertiserId}>
           <Button variant="outlined" fullWidth>
             {advertiser.Name}
           </Button>
-        </Grid>
-      );
-    }
-  });
+        </Grid>     
+    ));
 
   return (
     <Grid container spacing={1}>
       {freeAdvertisers}
     </Grid>
   );
-}
+};
 
 // 番組スケジュールグリッド
 function ProgramScheduleGrid({ ProgramList }) {
