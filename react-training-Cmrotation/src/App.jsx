@@ -70,23 +70,14 @@ function AvailableAdvertiserPool({ advertisers }) {
 // 広告主タグ一覧
 function AdvertiserTagList({ advertisers }) {
   // 広告主リストから各広告主の行コンポーネントを生成
-  // const freeAdvertisers = Advertisers.map((advertiser) => {
-  //   if (advertiser.ArrangeFlag) {
-  //     return (
-  //       <Grid size="auto" key={advertiser.AdvertiserId}>
-  //         <Button variant="outlined" fullWidth>
-  //           {advertiser.Name}
-  //         </Button>
-  //       </Grid>
-  //     );
   const freeAdvertisers = advertisers
     .filter((advertiser) => advertiser.ArrangeFlag)
     .map((advertiser) => (
-         <Grid size="auto" key={advertiser.AdvertiserId}>
-          <Button variant="outlined" fullWidth>
-            {advertiser.Name}
-          </Button>
-        </Grid>     
+      <Grid size="auto" key={advertiser.AdvertiserId}>
+        <Button variant="outlined" fullWidth>
+          {advertiser.Name}
+        </Button>
+      </Grid>
     ));
 
   return (
@@ -94,16 +85,18 @@ function AdvertiserTagList({ advertisers }) {
       {freeAdvertisers}
     </Grid>
   );
-};
+}
 
 // 番組スケジュールグリッド
 function ProgramScheduleGrid({ programList }) {
   // 番組リストから各番組の行コンポーネントを生成
-  const programSlotRows = programList.map((program) => {
-    return (
-      <ProgramSlotRow programName={program.programName} time={program.time} key={program.programId}/>
-    );
-  });
+  const programSlotRows = programList.map((program) => (
+    <ProgramSlotRow
+      programName={program.programName}
+      time={program.time}
+      key={program.programId}
+    />
+  ));
 
   return (
     <>
