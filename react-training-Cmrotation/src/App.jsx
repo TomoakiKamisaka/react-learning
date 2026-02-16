@@ -37,8 +37,8 @@ function CMSlotManagementBoard() {
   return (
     <>
       <AdvertiserSearchBar />
-      <AvailableAdvertiserPool Advertisers={ADVERTISERS} />
-      <ProgramScheduleGrid ProgramList={PROGRAMS} />
+      <AvailableAdvertiserPool advertisers={ADVERTISERS} />
+      <ProgramScheduleGrid programList={PROGRAMS} />
     </>
   );
 }
@@ -58,17 +58,17 @@ function AdvertiserSearchBar() {
 }
 
 // 配置可能広告主プール
-function AvailableAdvertiserPool({ Advertisers }) {
+function AvailableAdvertiserPool({ advertisers }) {
   return (
     <>
       <h3>利用可能な広告主(ドラッグして配置)</h3>
-      <AdvertiserTagList Advertisers={Advertisers} />
+      <AdvertiserTagList advertisers={advertisers} />
     </>
   );
 }
 
 // 広告主タグ一覧
-function AdvertiserTagList({ Advertisers }) {
+function AdvertiserTagList({ advertisers }) {
   // 広告主リストから各広告主の行コンポーネントを生成
   // const freeAdvertisers = Advertisers.map((advertiser) => {
   //   if (advertiser.ArrangeFlag) {
@@ -79,7 +79,7 @@ function AdvertiserTagList({ Advertisers }) {
   //         </Button>
   //       </Grid>
   //     );
-  const freeAdvertisers = Advertisers
+  const freeAdvertisers = advertisers
     .filter((advertiser) => advertiser.ArrangeFlag)
     .map((advertiser) => (
          <Grid size="auto" key={advertiser.AdvertiserId}>
@@ -97,18 +97,18 @@ function AdvertiserTagList({ Advertisers }) {
 };
 
 // 番組スケジュールグリッド
-function ProgramScheduleGrid({ ProgramList }) {
+function ProgramScheduleGrid({ programList }) {
   // 番組リストから各番組の行コンポーネントを生成
-  const AkiProgramList = ProgramList.map((Program) => {
+  const programSlotRows = programList.map((program) => {
     return (
-      <ProgramSlotRow programName={Program.programName} time={Program.time} key={Program.programId}/>
+      <ProgramSlotRow programName={program.programName} time={program.time} key={program.programId}/>
     );
   });
 
   return (
     <>
       <h3>番組一覧</h3>
-      {AkiProgramList}
+      {programSlotRows}
     </>
   );
 }
