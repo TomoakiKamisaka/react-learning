@@ -3,23 +3,33 @@ import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 
+const ADVERTISERS = [
+  {AdvertiserId:"000001" , Name:"サントリー", ArrangeFlag:true},
+  {AdvertiserId:"000002" , Name:"トヨタ", ArrangeFlag:true},
+  {AdvertiserId:"000003" , Name:"ソニー", ArrangeFlag:true},
+  {AdvertiserId:"000004" , Name:"パナソニック", ArrangeFlag:true},
+  {AdvertiserId:"000005" , Name:"日清食品", ArrangeFlag:true},
+  {AdvertiserId:"000006" , Name:"キリン", ArrangeFlag:true}
+];
+
 export default function App() {
   return (
     <>
       {/* ヘッダー */}
-      <h1>CM広告枠管理システム</h1>
+      <h1 style={{backgroundColor: "#6ec2f0", color: "white"}}>CM広告枠管理システム</h1>
       {/* メインコンテンツ */}
-      <CMSlotManagementBoard />
+      <CMSlotManagementBoard Advertisers={ADVERTISERS}/>
     </>
   );
 }
 
 //CMローテーション管理ボード
-function CMSlotManagementBoard() {
+function CMSlotManagementBoard({Advertisers}) {
+
   return (
     <>
-      <AdvertiserSearchBar />
-      <AvailableAdvertiserPool />
+      <AdvertiserSearchBar/>
+      <AvailableAdvertiserPool Advertisers={Advertisers}/>
       <ProgramScheduleGrid />
     </>
   );
@@ -28,7 +38,7 @@ function CMSlotManagementBoard() {
 // 検索バー
 function AdvertiserSearchBar() {
   return (
-    <Box sx={{ width: 500, maxWidth: "100%" }}>
+    <Box sx={{ width: 500, maxWidth: "100%"}}>
       <TextField
         fullWidth
         id="outlined-basic"
@@ -40,49 +50,31 @@ function AdvertiserSearchBar() {
 }
 
 // 配置可能広告主プール
-function AvailableAdvertiserPool() {
+function AvailableAdvertiserPool({Advertisers}) {
   return (
     <>
       <h3>利用可能な広告主(ドラッグして配置)</h3>
-      <AdvertiserTagList />
+      <AdvertiserTagList Advertisers={Advertisers}/>
     </>
   );
 }
 
 // 広告主タグ一覧
-function AdvertiserTagList() {
+  function AdvertiserTagList({Advertisers}) {
+
+  const freeAdvertisers = Advertisers.map((advertiser)=>{
+    return(
+      <Grid size="auto">
+        <Button variant="outlined" fullWidth>
+          {advertiser.Name}
+        </Button>
+      </Grid>
+    )
+  })
+
   return (
     <Grid container spacing={1}>
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          サントリー
-        </Button>
-      </Grid>
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          トヨタ
-        </Button>
-      </Grid>
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          ソニー
-        </Button>
-      </Grid>
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          パナソニック
-        </Button>
-      </Grid>
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          日清食品
-        </Button>
-      </Grid>
-      <Grid size="auto">
-        <Button variant="outlined" fullWidth>
-          キリン
-        </Button>
-      </Grid>
+      {freeAdvertisers}
     </Grid>
   );
 }
