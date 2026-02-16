@@ -71,7 +71,7 @@ function AvailableAdvertiserPool({ Advertisers }) {
 function AdvertiserTagList({ Advertisers }) {
   // 広告主リストから各広告主の行コンポーネントを生成
   const freeAdvertisers = Advertisers.map((advertiser) => {
-    if(advertiser.ArrangeFlag){
+    if (advertiser.ArrangeFlag) {
       return (
         <Grid size="auto">
           <Button variant="outlined" fullWidth>
@@ -80,7 +80,6 @@ function AdvertiserTagList({ Advertisers }) {
         </Grid>
       );
     }
-
   });
 
   return (
@@ -126,24 +125,12 @@ function ProgramSlotRow({ programName, time }) {
           <ProgramInfo programName={programName} time={time} />
         </Grid>
         {/* 広告枠: 各1/12 × 6枠 = 6/12、残り4/12は空き */}
-        <Grid size={1}>
-          <AdSlotCard slotNumber={1} />
-        </Grid>
-        <Grid size={1}>
-          <AdSlotCard slotNumber={2} />
-        </Grid>
-        <Grid size={1}>
-          <AdSlotCard slotNumber={3} />
-        </Grid>
-        <Grid size={1}>
-          <AdSlotCard slotNumber={4} />
-        </Grid>
-        <Grid size={1}>
-          <AdSlotCard slotNumber={5} />
-        </Grid>
-        <Grid size={1}>
-          <AdSlotCard slotNumber={6} />
-        </Grid>
+        {[0, 1, 2, 3, 4, 5, 6].map((number) => (
+            <Grid size={1}>
+              <AdSlotCard slotNumber={number} />
+            </Grid>
+          )
+        )}
       </Grid>
     </Box>
   );
