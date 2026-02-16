@@ -13,10 +13,10 @@ const ADVERTISERS = [
 ];
 
 const PROGRAMS = [
-  { programName: "朝のニュース", time: "7:00-8:00" },
-  { programName: "情報バラエティ", time: "9:00-10:00" },
-  { programName: "昼のドラマ", time: "12:00-13:00" },
-  { programName: "夕方ニュース", time: "18:00-19:00" },
+  { programId: "000001", programName: "朝のニュース", time: "7:00-8:00" },
+  { programId: "000002", programName: "情報バラエティ", time: "9:00-10:00" },
+  { programId: "000003", programName: "昼のドラマ", time: "12:00-13:00" },
+  { programId: "000004", programName: "夕方ニュース", time: "18:00-19:00" },
 ];
 
 export default function App() {
@@ -73,7 +73,7 @@ function AdvertiserTagList({ Advertisers }) {
   const freeAdvertisers = Advertisers.map((advertiser) => {
     if (advertiser.ArrangeFlag) {
       return (
-        <Grid size="auto">
+        <Grid size="auto" key={advertiser.AdvertiserId}>
           <Button variant="outlined" fullWidth>
             {advertiser.Name}
           </Button>
@@ -94,7 +94,7 @@ function ProgramScheduleGrid({ ProgramList }) {
   // 番組リストから各番組の行コンポーネントを生成
   const AkiProgramList = ProgramList.map((Program) => {
     return (
-      <ProgramSlotRow programName={Program.programName} time={Program.time} />
+      <ProgramSlotRow programName={Program.programName} time={Program.time} key={Program.programId}/>
     );
   });
 
@@ -125,12 +125,11 @@ function ProgramSlotRow({ programName, time }) {
           <ProgramInfo programName={programName} time={time} />
         </Grid>
         {/* 広告枠: 各1/12 × 6枠 = 6/12、残り4/12は空き */}
-        {[0, 1, 2, 3, 4, 5, 6].map((number) => (
-            <Grid size={1}>
-              <AdSlotCard slotNumber={number} />
-            </Grid>
-          )
-        )}
+        {[1, 2, 3, 4, 5, 6].map((number) => (
+          <Grid size={1} key={number}>
+            <AdSlotCard slotNumber={number} />
+          </Grid>
+        ))}
       </Grid>
     </Box>
   );
