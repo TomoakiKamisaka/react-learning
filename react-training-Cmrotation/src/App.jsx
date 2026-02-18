@@ -2,6 +2,7 @@ import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
+import { useState } from "react";
 
 const ADVERTISERS = [
   { AdvertiserId: "000001", Name: "サントリー", ArrangeFlag: true },
@@ -34,17 +35,25 @@ export default function App() {
 
 //CMローテーション管理ボード
 function CMSlotManagementBoard() {
+  const [filterText, setFilterText] = useState("");
+
   return (
     <>
-      <AdvertiserSearchBar />
-      <AvailableAdvertiserPool advertisers={ADVERTISERS} />
+      <AdvertiserSearchBar
+        filterText={filterText}
+        onfilterTextChange={setFilterText}
+      />
+      <AvailableAdvertiserPool
+        advertisers={ADVERTISERS}
+        filterText={filterText}
+      />
       <ProgramScheduleGrid programList={PROGRAMS} />
     </>
   );
 }
 
 // 検索バー
-function AdvertiserSearchBar() {
+function AdvertiserSearchBar({ filterText, onfilterTextChange }) {
   return (
     <Box sx={{ width: 500, maxWidth: "100%" }}>
       <TextField
@@ -52,26 +61,29 @@ function AdvertiserSearchBar() {
         id="outlined-basic"
         label="広告主を検索"
         variant="outlined"
+        value={filterText}
+        onChange={(e) => onfilterTextChange(e.target.value)}
       />
     </Box>
   );
 }
 
 // 配置可能広告主プール
-function AvailableAdvertiserPool({ advertisers }) {
+function AvailableAdvertiserPool({ advertisers, filterText }) {
   return (
     <>
       <h3>利用可能な広告主(ドラッグして配置)</h3>
-      <AdvertiserTagList advertisers={advertisers} />
+      <AdvertiserTagList advertisers={advertisers} filterText={filterText} />
     </>
   );
 }
 
 // 広告主タグ一覧
-function AdvertiserTagList({ advertisers }) {
+function AdvertiserTagList({ advertisers, filterText }) {
   // 広告主リストから各広告主の行コンポーネントを生成
   const freeAdvertisers = advertisers
     .filter((advertiser) => advertiser.ArrangeFlag)
+    .filter((advertiser) => advertiser.Name.includes(filterText))
     .map((advertiser) => (
       <Grid size="auto" key={advertiser.AdvertiserId}>
         <Button variant="outlined" fullWidth>
