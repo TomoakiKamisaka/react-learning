@@ -4,6 +4,8 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import { useState } from "react";
 
+//データ(ハードコーディング)
+//広告主
 const ADVERTISERS = [
   { advertiserId: "000001", Name: "サントリー", arrangeFlag: true },
   { advertiserId: "000002", Name: "トヨタ", arrangeFlag: true },
@@ -12,7 +14,7 @@ const ADVERTISERS = [
   { advertiserId: "000005", Name: "日清食品", arrangeFlag: true },
   { advertiserId: "000006", Name: "キリン", arrangeFlag: true },
 ];
-
+//番組名
 const PROGRAMS = [
   { programId: "000001", programName: "朝のニュース", time: "7:00-8:00" },
   { programId: "000002", programName: "情報バラエティ", time: "9:00-10:00" },
@@ -20,6 +22,7 @@ const PROGRAMS = [
   { programId: "000004", programName: "夕方ニュース", time: "18:00-19:00" },
 ];
 
+//画面全体
 export default function App() {
   return (
     <>
@@ -40,6 +43,7 @@ function CMSlotManagementBoard() {
 
   //広告主をドロップした場合に広告主の空き枠フラグ変更する機能
   function handleDropAdvertiser(advertiserId) {
+    //広告主No.が一致する該当広告主の配置フラグをOFFにする
     let newAdvertisers = advertisers.map((advertiser) => {
       if (advertiser.advertiserId === advertiserId) {
         return { ...advertiser, arrangeFlag: false };
@@ -47,6 +51,7 @@ function CMSlotManagementBoard() {
         return advertiser;
       }
     });
+    //広告主リストをuseStateにセットする(レンダリング)
     setAdvertisers(newAdvertisers);
   }
 
@@ -97,8 +102,9 @@ function AvailableAdvertiserPool({ advertisers, filterText }) {
 
 // 広告主タグ一覧
 function AdvertiserTagList({ advertisers, filterText }) {
-  // 広告主リストから各広告主の行コンポーネントを生成
+  // 広告主リストから各広告主のボタンを生成
   const freeAdvertisers = advertisers
+    //配置フラグがtrue and 検索テキストに含まれる広告主を絞り込み
     .filter((advertiser) => advertiser.arrangeFlag)
     .filter((advertiser) => advertiser.Name.includes(filterText))
     .map((advertiser) => (
@@ -196,7 +202,7 @@ function AdSlotCard({ slotNumber, onDropAdvertiser, advertisers }) {
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         const advertiserId = e.dataTransfer.getData("text");
-        // ここで配置処理
+        // 配置処理
         const advertiser = advertisers.find(
           (advertiser) => advertiser.advertiserId === advertiserId,
         );
