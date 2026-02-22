@@ -86,7 +86,14 @@ function AdvertiserTagList({ advertisers, filterText }) {
     .filter((advertiser) => advertiser.Name.includes(filterText))
     .map((advertiser) => (
       <Grid size="auto" key={advertiser.AdvertiserId}>
-        <Button variant="outlined" fullWidth>
+        <Button
+          draggable
+          onDragStart={(e) =>
+            e.dataTransfer.setData("text", advertiser.AdvertiserId)
+          }
+          variant="outlined"
+          fullWidth
+        >
           {advertiser.Name}
         </Button>
       </Grid>
@@ -160,8 +167,16 @@ function ProgramInfo({ programName, time }) {
 
 // 広告枠カード
 function AdSlotCard({ slotNumber }) {
+  const [akiwaku, setAkiwaku] = useState("");
   return (
     <Box
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        const advertiserId = e.dataTransfer.getData("text");
+        // ここで配置処理
+        const advertiser = ADVERTISERS.find((advertiser)=> advertiser.AdvertiserId ===advertiserId)
+        setAkiwaku(advertiser.Name);
+      }}
       sx={{
         border: "2px dashed",
         borderColor: "grey.300",
@@ -176,7 +191,7 @@ function AdSlotCard({ slotNumber }) {
         fontSize: 14,
       }}
     >
-      <span>空枠{slotNumber}</span>
+      <span>{akiwaku ? akiwaku : `空枠${slotNumber}`}</span>
     </Box>
   );
 }
