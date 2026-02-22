@@ -5,12 +5,12 @@ import Box from "@mui/material/Box";
 import { useState } from "react";
 
 const ADVERTISERS = [
-  { AdvertiserId: "000001", Name: "サントリー", ArrangeFlag: true },
-  { AdvertiserId: "000002", Name: "トヨタ", ArrangeFlag: true },
-  { AdvertiserId: "000003", Name: "ソニー", ArrangeFlag: true },
-  { AdvertiserId: "000004", Name: "パナソニック", ArrangeFlag: true },
-  { AdvertiserId: "000005", Name: "日清食品", ArrangeFlag: true },
-  { AdvertiserId: "000006", Name: "キリン", ArrangeFlag: true },
+  { advertiserId: "000001", Name: "サントリー", arrangeFlag: true },
+  { advertiserId: "000002", Name: "トヨタ", arrangeFlag: true },
+  { advertiserId: "000003", Name: "ソニー", arrangeFlag: true },
+  { advertiserId: "000004", Name: "パナソニック", arrangeFlag: true },
+  { advertiserId: "000005", Name: "日清食品", arrangeFlag: true },
+  { advertiserId: "000006", Name: "キリン", arrangeFlag: true },
 ];
 
 const PROGRAMS = [
@@ -36,6 +36,19 @@ export default function App() {
 //CMローテーション管理ボード
 function CMSlotManagementBoard() {
   const [filterText, setFilterText] = useState("");
+  const [advertisers, setAdvertisers] = useState(ADVERTISERS);
+
+  //広告主をドロップした場合に広告主の空き枠フラグ変更する機能
+  function handleDropAdvertiser(advertiserId) {
+    let newAdvertisers = advertisers.map((advertiser) => {
+      if (advertiser.advertiserId === advertiserId) {
+        return { ...advertiser, arrangeFlag: false };
+      } else {
+        return advertiser;
+      }
+    });
+    setAdvertisers(newAdvertisers);
+  }
 
   return (
     <>
@@ -44,10 +57,14 @@ function CMSlotManagementBoard() {
         onfilterTextChange={setFilterText}
       />
       <AvailableAdvertiserPool
-        advertisers={ADVERTISERS}
+        advertisers={advertisers}
         filterText={filterText}
       />
-      <ProgramScheduleGrid programList={PROGRAMS} />
+      <ProgramScheduleGrid
+        programList={PROGRAMS}
+        onDropAdvertiser={handleDropAdvertiser}
+        advertisers={advertisers}
+      />
     </>
   );
 }
@@ -82,14 +99,14 @@ function AvailableAdvertiserPool({ advertisers, filterText }) {
 function AdvertiserTagList({ advertisers, filterText }) {
   // 広告主リストから各広告主の行コンポーネントを生成
   const freeAdvertisers = advertisers
-    .filter((advertiser) => advertiser.ArrangeFlag)
+    .filter((advertiser) => advertiser.arrangeFlag)
     .filter((advertiser) => advertiser.Name.includes(filterText))
     .map((advertiser) => (
-      <Grid size="auto" key={advertiser.AdvertiserId}>
+      <Grid size="auto" key={advertiser.advertiserId}>
         <Button
           draggable
           onDragStart={(e) =>
-            e.dataTransfer.setData("text", advertiser.AdvertiserId)
+            e.dataTransfer.setData("text", advertiser.advertiserId)
           }
           variant="outlined"
           fullWidth
@@ -107,13 +124,15 @@ function AdvertiserTagList({ advertisers, filterText }) {
 }
 
 // 番組スケジュールグリッド
-function ProgramScheduleGrid({ programList }) {
+function ProgramScheduleGrid({ programList, onDropAdvertiser, advertisers }) {
   // 番組リストから各番組の行コンポーネントを生成
   const programSlotRows = programList.map((program) => (
     <ProgramSlotRow
       programName={program.programName}
       time={program.time}
       key={program.programId}
+      onDropAdvertiser={onDropAdvertiser}
+      advertisers={advertisers}
     />
   ));
 
@@ -126,7 +145,7 @@ function ProgramScheduleGrid({ programList }) {
 }
 
 // 番組行（1番組分）
-function ProgramSlotRow({ programName, time }) {
+function ProgramSlotRow({ programName, time, onDropAdvertiser, advertisers }) {
   return (
     <Box
       sx={{
@@ -146,7 +165,11 @@ function ProgramSlotRow({ programName, time }) {
         {/* 広告枠: 各1/12 × 6枠 = 6/12、残り4/12は空き */}
         {[1, 2, 3, 4, 5, 6].map((number) => (
           <Grid size={1} key={number}>
-            <AdSlotCard slotNumber={number} />
+            <AdSlotCard
+              slotNumber={number}
+              onDropAdvertiser={onDropAdvertiser}
+              advertisers={advertisers}
+            />
           </Grid>
         ))}
       </Grid>
@@ -166,7 +189,7 @@ function ProgramInfo({ programName, time }) {
 }
 
 // 広告枠カード
-function AdSlotCard({ slotNumber }) {
+function AdSlotCard({ slotNumber, onDropAdvertiser, advertisers }) {
   const [akiwaku, setAkiwaku] = useState("");
   return (
     <Box
@@ -174,8 +197,11 @@ function AdSlotCard({ slotNumber }) {
       onDrop={(e) => {
         const advertiserId = e.dataTransfer.getData("text");
         // ここで配置処理
-        const advertiser = ADVERTISERS.find((advertiser)=> advertiser.AdvertiserId ===advertiserId)
+        const advertiser = advertisers.find(
+          (advertiser) => advertiser.advertiserId === advertiserId,
+        );
         setAkiwaku(advertiser.Name);
+        onDropAdvertiser(advertiserId);
       }}
       sx={{
         border: "2px dashed",
