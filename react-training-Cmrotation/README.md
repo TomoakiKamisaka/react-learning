@@ -49,14 +49,14 @@ npm run dev
 
 ## 📝 利用可能なコマンド
 
-| コマンド | 説明 |
-|---------|------|
-| `npm run dev` | 開発サーバーを起動（ホットリロード有効） |
-| `npm run build` | 本番用にビルド（`dist` フォルダに出力） |
-| `npm run preview` | ビルドしたアプリをローカルでプレビュー |
-| `npm run lint` | ESLint でコードチェック |
-| `npm run lint:staged` | lint-staged でステージングエリアのファイルをチェック |
-| `npm run format` | Prettier ですべてのファイルを自動整形 |
+| コマンド               | 説明                                                    |
+| ---------------------- | ------------------------------------------------------- |
+| `npm run dev`          | 開発サーバーを起動（ホットリロード有効）                |
+| `npm run build`        | 本番用にビルド（`dist` フォルダに出力）                 |
+| `npm run preview`      | ビルドしたアプリをローカルでプレビュー                  |
+| `npm run lint`         | ESLint でコードチェック                                 |
+| `npm run lint:staged`  | lint-staged でステージングエリアのファイルをチェック    |
+| `npm run format`       | Prettier ですべてのファイルを自動整形                   |
 | `npm run format:check` | Prettier でフォーマット状態をチェック（自動整形しない） |
 
 ## 📂 プロジェクト構造
