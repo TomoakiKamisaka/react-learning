@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - "react-training-Cmrotation/**"
+      - ".github/workflows/lint.yml"
 
 jobs:
   lint:
