@@ -8,7 +8,10 @@
 - **ビルドツール**: Vite 7.3.1
 - **UI ライブラリ**: Material-UI (MUI) 7.3.8
 - **スタイリング**: Emotion
-- **リンター**: ESLint
+- **リンター**: ESLint 9.39.1
+- **フォーマッター**: Prettier 3.8.1
+- **Git フック**: Husky 9.1.7
+- **ステージド ファイル チェック**: lint-staged 16.3.2
 
 ## 🔧 必要な環境
 
@@ -52,11 +55,16 @@ npm run dev
 | `npm run build` | 本番用にビルド（`dist` フォルダに出力） |
 | `npm run preview` | ビルドしたアプリをローカルでプレビュー |
 | `npm run lint` | ESLint でコードチェック |
+| `npm run lint:staged` | lint-staged でステージングエリアのファイルをチェック |
+| `npm run format` | Prettier ですべてのファイルを自動整形 |
+| `npm run format:check` | Prettier でフォーマット状態をチェック（自動整形しない） |
 
 ## 📂 プロジェクト構造
 
 ```
 react-training-Cmrotation/
+├── .github/          # GitHub 設定
+├── .husky/           # Husky Git フック
 ├── public/           # 静的ファイル（画像など）
 ├── src/              # ソースコード
 │   ├── main.jsx      # アプリのエントリーポイント
@@ -64,6 +72,8 @@ react-training-Cmrotation/
 │   ├── App.css       # Appコンポーネントのスタイル
 │   ├── index.css     # グローバルスタイル
 │   └── assets/       # 画像などのアセット
+├── .prettierrc       # Prettier の設定ファイル
+├── .prettierignore   # Prettier で無視するファイルの指定
 ├── index.html        # HTMLテンプレート
 ├── package.json      # 依存関係とスクリプト定義
 ├── vite.config.js    # Vite の設定ファイル
@@ -95,13 +105,44 @@ function MyComponent() {
 
 公式ドキュメント: [Material-UI](https://mui.com/)
 
-### コードの品質チェック
+### コード品質管理
 
-コミット前に以下を実行することをおすすめします：
+本プロジェクトには、以下のツールによるコード品質管理が自動化されています：
+
+#### Prettier（コードフォーマッター）
+
+すべてのファイルを一貫したスタイルで自動整形します。
 
 ```bash
-npm run lint
+npm run format        # ファイルを自動整形
+npm run format:check  # フォーマット状態をチェック
 ```
+
+#### Husky と lint-staged
+
+コミット前に自動的にコードチェック・整形を実行します。以下のフックが設定されています：
+
+- **pre-commit**: git commit 実行時に `npm run lint:staged` が自動実行され、ステージングエリアのファイルに対して ESLint と Prettier が実行されます。ブロッキングエラーがある場合、コミットが中止されます。
+
+```bash
+# 通常、git commit すると自動実行される
+git commit -m "更新"
+
+# 手動実行も可能
+npm run lint:staged
+```
+
+#### ESLint（リンター）
+
+コードの品質をチェックします。
+
+```bash
+npm run lint  # ESLint でコードチェック
+```
+
+#### GitHub Actions による CI
+
+push または PR 時に GitHub Actions で自動的に ESLint と Prettier チェックが実行されます。詳細は [.github/workflows/lint.yml](../../.github/workflows/lint.yml) を参照してください。
 
 ## 🔗 参考リンク
 
@@ -109,6 +150,9 @@ npm run lint
 - [Vite 公式ドキュメント](https://ja.vite.dev/)
 - [Material-UI 公式ドキュメント](https://mui.com/)
 - [ESLint 公式ドキュメント](https://eslint.org/)
+- [Prettier 公式ドキュメント](https://prettier.io/)
+- [Husky ドキュメント](https://typicode.github.io/husky/)
+- [lint-staged ドキュメント](https://github.com/lint-staged/lint-staged)
 
 ## 📚 さらに学ぶには
 
