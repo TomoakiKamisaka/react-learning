@@ -1,25 +1,25 @@
-import Button from "@mui/material/Button";
-import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
-import { useState } from "react";
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import { useState } from 'react';
 
 //データ(ハードコーディング)
 //広告主
 const ADVERTISERS = [
-  { advertiserId: "000001", Name: "サントリー", arrangeFlag: true },
-  { advertiserId: "000002", Name: "トヨタ", arrangeFlag: true },
-  { advertiserId: "000003", Name: "ソニー", arrangeFlag: true },
-  { advertiserId: "000004", Name: "パナソニック", arrangeFlag: true },
-  { advertiserId: "000005", Name: "日清食品", arrangeFlag: true },
-  { advertiserId: "000006", Name: "キリン", arrangeFlag: true },
+  { advertiserId: '000001', Name: 'サントリー', arrangeFlag: true },
+  { advertiserId: '000002', Name: 'トヨタ', arrangeFlag: true },
+  { advertiserId: '000003', Name: 'ソニー', arrangeFlag: true },
+  { advertiserId: '000004', Name: 'パナソニック', arrangeFlag: true },
+  { advertiserId: '000005', Name: '日清食品', arrangeFlag: true },
+  { advertiserId: '000006', Name: 'キリン', arrangeFlag: true },
 ];
 //番組名
 const PROGRAMS = [
-  { programId: "000001", programName: "朝のニュース", time: "7:00-8:00" },
-  { programId: "000002", programName: "情報バラエティ", time: "9:00-10:00" },
-  { programId: "000003", programName: "昼のドラマ", time: "12:00-13:00" },
-  { programId: "000004", programName: "夕方ニュース", time: "18:00-19:00" },
+  { programId: '000001', programName: '朝のニュース', time: '7:00-8:00' },
+  { programId: '000002', programName: '情報バラエティ', time: '9:00-10:00' },
+  { programId: '000003', programName: '昼のドラマ', time: '12:00-13:00' },
+  { programId: '000004', programName: '夕方ニュース', time: '18:00-19:00' },
 ];
 
 //画面全体
@@ -27,9 +27,7 @@ export default function App() {
   return (
     <>
       {/* ヘッダー */}
-      <h1 style={{ backgroundColor: "#6ec2f0", color: "white" }}>
-        CM広告枠管理システム
-      </h1>
+      <h1 style={{ backgroundColor: '#6ec2f0', color: 'white' }}>CM広告枠管理システム</h1>
       {/* メインコンテンツ */}
       <CMSlotManagementBoard />
     </>
@@ -38,7 +36,7 @@ export default function App() {
 
 //CMローテーション管理ボード
 function CMSlotManagementBoard() {
-  const [filterText, setFilterText] = useState("");
+  const [filterText, setFilterText] = useState('');
   const [advertisers, setAdvertisers] = useState(ADVERTISERS);
 
   //広告主をドロップした場合に広告主の空き枠フラグ変更する機能
@@ -57,14 +55,8 @@ function CMSlotManagementBoard() {
 
   return (
     <>
-      <AdvertiserSearchBar
-        filterText={filterText}
-        onfilterTextChange={setFilterText}
-      />
-      <AvailableAdvertiserPool
-        advertisers={advertisers}
-        filterText={filterText}
-      />
+      <AdvertiserSearchBar filterText={filterText} onfilterTextChange={setFilterText} />
+      <AvailableAdvertiserPool advertisers={advertisers} filterText={filterText} />
       <ProgramScheduleGrid
         programList={PROGRAMS}
         onDropAdvertiser={handleDropAdvertiser}
@@ -77,7 +69,7 @@ function CMSlotManagementBoard() {
 // 検索バー
 function AdvertiserSearchBar({ filterText, onfilterTextChange }) {
   return (
-    <Box sx={{ width: 500, maxWidth: "100%" }}>
+    <Box sx={{ width: 500, maxWidth: '100%' }}>
       <TextField
         fullWidth
         id="outlined-basic"
@@ -111,9 +103,7 @@ function AdvertiserTagList({ advertisers, filterText }) {
       <Grid size="auto" key={advertiser.advertiserId}>
         <Button
           draggable
-          onDragStart={(e) =>
-            e.dataTransfer.setData("text", advertiser.advertiserId)
-          }
+          onDragStart={(e) => e.dataTransfer.setData('text', advertiser.advertiserId)}
           variant="outlined"
           fullWidth
         >
@@ -155,12 +145,12 @@ function ProgramSlotRow({ programName, time, onDropAdvertiser, advertisers }) {
   return (
     <Box
       sx={{
-        border: "1px solid",
-        borderColor: "grey.300",
+        border: '1px solid',
+        borderColor: 'grey.300',
         borderRadius: 2,
         p: 2,
         mb: 2,
-        bgcolor: "white",
+        bgcolor: 'white',
       }}
     >
       <Grid container spacing={1}>
@@ -196,30 +186,30 @@ function ProgramInfo({ programName, time }) {
 
 // 広告枠カード
 function AdSlotCard({ slotNumber, onDropAdvertiser, advertisers }) {
-  const [akiwaku, setAkiwaku] = useState("");
+  const [akiwaku, setAkiwaku] = useState('');
   return (
     <Box
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
-        const advertiserId = e.dataTransfer.getData("text");
+        const advertiserId = e.dataTransfer.getData('text');
         // 配置処理
         const advertiser = advertisers.find(
-          (advertiser) => advertiser.advertiserId === advertiserId,
+          (advertiser) => advertiser.advertiserId === advertiserId
         );
         setAkiwaku(advertiser.Name);
         onDropAdvertiser(advertiserId);
       }}
       sx={{
-        border: "2px dashed",
-        borderColor: "grey.300",
+        border: '2px dashed',
+        borderColor: 'grey.300',
         borderRadius: 2,
         p: 2,
         minHeight: 80,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        bgcolor: "grey.50",
-        color: "grey.500",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        bgcolor: 'grey.50',
+        color: 'grey.500',
         fontSize: 14,
       }}
     >
