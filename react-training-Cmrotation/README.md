@@ -142,7 +142,7 @@ npm run lint  # ESLint でコードチェック
 
 #### GitHub Actions による CI
 
-push または PR 時に GitHub Actions で自動的に ESLint と Prettier チェックが実行されます。詳細は [.github/workflows/lint.yml](../../.github/workflows/lint.yml) を参照してください。
+push または PR 時に GitHub Actions で自動的に ESLint と Prettier チェックが実行されます。詳細は [.github/workflows/lint.yml](../.github/workflows/lint.yml) を参照してください。
 
 ## 🔗 参考リンク
 
