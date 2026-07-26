@@ -27,26 +27,17 @@ export default function App() {
   return (
     <>
       {/* ヘッダー */}
-      <Header />
+      <h1 style={{ backgroundColor: '#6ec2f0', color: 'white' }}>CM広告枠管理システム</h1>
       {/* メインコンテンツ */}
       <CMSlotManagementBoard />
     </>
   );
 }
 
-//ヘッダー
-function Header() {
-  return(
-    <h1 style={{ backgroundColor: '#6ec2f0', color: 'white' }}>CM広告枠管理システム</h1>
-  )
-}
-
 //CMローテーション管理ボード
 function CMSlotManagementBoard() {
   const [filterText, setFilterText] = useState('');
-  const [addAdvertiserText, setAddAdvertiserText] = useState('');
   const [advertisers, setAdvertisers] = useState(ADVERTISERS);
-
 
   //広告主をドロップした場合に広告主の空き枠フラグ変更する機能
   function handleDropAdvertiser(advertiserId) {
@@ -62,39 +53,9 @@ function CMSlotManagementBoard() {
     setAdvertisers(newAdvertisers);
   }
 
-  //広告主を新規追加する機能
-  function handleAddAdvertiser(){
-
-    //新しい広告主オブジェクトを作る
-    const newAdvertiser = {advertiserId: Date.now(), Name: addAdvertiserText, arrangeFlag: true};
-
-    //スプレッド構文で新しい配列を作る
-    const newAdvertisers = [...advertisers, newAdvertiser];
-    //advertisersにセットする
-    setAdvertisers(newAdvertisers);
-    //入力欄を空に戻す
-    setAddAdvertiserText('');
-
-  }
-
   return (
     <>
       <AdvertiserSearchBar filterText={filterText} onfilterTextChange={setFilterText} />
-      <Box>
-        <TextField 
-          id="outlined-basic"
-          label="追加したい広告主を入力"
-          varient="outlined"
-          value={addAdvertiserText}
-          onChange={(e) => setAddAdvertiserText(e.target.value)}
-
-        />
-      </Box>
-      <button 
-        onClick={handleAddAdvertiser}
-      >
-        広告主追加
-      </button>
       <AvailableAdvertiserPool advertisers={advertisers} filterText={filterText} />
       <ProgramScheduleGrid
         programList={PROGRAMS}
