@@ -61,6 +61,9 @@ function CMSlotManagementBoard() {
 
   //広告主を新規追加する機能
   function handleAddAdvertiser() {
+    //ガード節:入力された広告主名が空文字・空白のみの場合、この関数の実行は終了
+    if(!addAdvertiserText.trim()) return;
+
     //新しい広告主オブジェクトを作る
     const newAdvertiser = { advertiserId: String(Date.now()), Name: addAdvertiserText, arrangeFlag: true };
 
