@@ -82,7 +82,7 @@ function CMSlotManagementBoard() {
         <TextField
           id="outlined-basic"
           label="追加したい広告主を入力"
-          varient="outlined"
+          variant="outlined"
           value={addAdvertiserText}
           onChange={(e) => setAddAdvertiserText(e.target.value)}
         />
