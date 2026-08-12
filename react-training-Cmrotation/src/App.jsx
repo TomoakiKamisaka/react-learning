@@ -62,10 +62,14 @@ function CMSlotManagementBoard() {
   //広告主を新規追加する機能
   function handleAddAdvertiser() {
     //ガード節:入力された広告主名が空文字・空白のみの場合、この関数の実行は終了
-    if(!addAdvertiserText.trim()) return;
+    if (!addAdvertiserText.trim()) return;
 
     //新しい広告主オブジェクトを作る
-    const newAdvertiser = { advertiserId: String(Date.now()), Name: addAdvertiserText, arrangeFlag: true };
+    const newAdvertiser = {
+      advertiserId: String(Date.now()),
+      Name: addAdvertiserText,
+      arrangeFlag: true,
+    };
 
     //スプレッド構文で新しい配列を作る
     const newAdvertisers = [...advertisers, newAdvertiser];
@@ -78,16 +82,24 @@ function CMSlotManagementBoard() {
   return (
     <>
       <AdvertiserSearchBar filterText={filterText} onfilterTextChange={setFilterText} />
-      <Box>
-        <TextField
-          id="outlined-basic"
-          label="追加したい広告主を入力"
-          variant="outlined"
-          value={addAdvertiserText}
-          onChange={(e) => setAddAdvertiserText(e.target.value)}
-        />
-      </Box>
-      <button onClick={handleAddAdvertiser}>広告主追加</button>
+      <Grid container spacing={2}>
+        <Grid size={4}>
+          <TextField
+            id="outlined-basic"
+            label="追加したい広告主を入力"
+            variant="outlined"
+            value={addAdvertiserText}
+            onChange={(e) => setAddAdvertiserText(e.target.value)}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={2}>
+          <Button onClick={handleAddAdvertiser} variant="contained">
+            広告主追加
+          </Button>
+        </Grid>
+      </Grid>
+
       <AvailableAdvertiserPool advertisers={advertisers} filterText={filterText} />
       <ProgramScheduleGrid
         programList={PROGRAMS}
