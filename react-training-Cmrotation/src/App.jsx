@@ -62,7 +62,7 @@ function CMSlotManagementBoard() {
   //広告主を新規追加する機能
   function handleAddAdvertiser() {
     //新しい広告主オブジェクトを作る
-    const newAdvertiser = { advertiserId: Date.now(), Name: addAdvertiserText, arrangeFlag: true };
+    const newAdvertiser = { advertiserId: String(Date.now()), Name: addAdvertiserText, arrangeFlag: true };
 
     //スプレッド構文で新しい配列を作る
     const newAdvertisers = [...advertisers, newAdvertiser];
