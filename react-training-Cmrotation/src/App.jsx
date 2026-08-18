@@ -2,18 +2,10 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Login from './Login';
 
 //データ(ハードコーディング)
-//広告主
-const ADVERTISERS = [
-  { advertiserId: '000001', Name: 'サントリー', arrangeFlag: true },
-  { advertiserId: '000002', Name: 'トヨタ', arrangeFlag: true },
-  { advertiserId: '000003', Name: 'ソニー', arrangeFlag: true },
-  { advertiserId: '000004', Name: 'パナソニック', arrangeFlag: true },
-  { advertiserId: '000005', Name: '日清食品', arrangeFlag: true },
-  { advertiserId: '000006', Name: 'キリン', arrangeFlag: true },
-];
 //番組名
 const PROGRAMS = [
   { programId: '000001', programName: '朝のニュース', time: '7:00-8:00' },
@@ -24,20 +16,52 @@ const PROGRAMS = [
 
 //画面全体
 export default function App() {
+  const [idToken, setIdToken] = useState('');
+
   return (
     <>
       {/* ヘッダー */}
       <h1 style={{ backgroundColor: '#6ec2f0', color: 'white' }}>CM広告枠管理システム</h1>
       {/* メインコンテンツ */}
-      <CMSlotManagementBoard />
+      {idToken ? (
+        <CMSlotManagementBoard idToken={idToken}/>
+      ) : (
+        <Login onLoginSuccess={setIdToken}/>
+      )}
     </>
   );
 }
 
 //CMローテーション管理ボード
-function CMSlotManagementBoard() {
+function CMSlotManagementBoard({idToken}) {
   const [filterText, setFilterText] = useState('');
-  const [advertisers, setAdvertisers] = useState(ADVERTISERS);
+  const [addAdvertiserText, setAddAdvertiserText] = useState('');
+  const [advertisers, setAdvertisers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(()=>{
+    async function getAdvertisers(){
+      try{
+        const response = await fetch(
+          'https://m5uualaa81.execute-api.ap-northeast-1.amazonaws.com/prod/advertisers', 
+          {
+            headers: {
+              'Authorization': `Bearer ${idToken}`
+            }
+          }
+        )
+        const data = await response.json();
+        setAdvertisers(data);
+        
+      }catch(e){
+        setError(e);
+      }finally{
+        setIsLoading(false);
+      }
+    }
+    getAdvertisers();
+  },[idToken]);
 
   //広告主をドロップした場合に広告主の空き枠フラグ変更する機能
   function handleDropAdvertiser(advertiserId) {
@@ -52,10 +76,48 @@ function CMSlotManagementBoard() {
     //広告主リストをuseStateにセットする(レンダリング)
     setAdvertisers(newAdvertisers);
   }
+    //広告主を新規追加する機能
+  function handleAddAdvertiser() {
+    //ガード節:入力された広告主名が空文字・空白のみの場合、この関数の実行は終了
+    if (!addAdvertiserText.trim()) return;
+
+    //新しい広告主オブジェクトを作る
+    const newAdvertiser = {
+      advertiserId: String(Date.now()),
+      Name: addAdvertiserText,
+      arrangeFlag: true,
+    };
+
+    //スプレッド構文で新しい配列を作る
+    const newAdvertisers = [...advertisers, newAdvertiser];
+    //advertisersにセットする
+    setAdvertisers(newAdvertisers);
+    //入力欄を空に戻す
+    setAddAdvertiserText('');
+  }
 
   return (
     <>
       <AdvertiserSearchBar filterText={filterText} onfilterTextChange={setFilterText} />
+      <Grid container spacing={2}>
+        <Grid size={4}>
+          <TextField
+            id="outlined-basic"
+            label="追加したい広告主を入力"
+            variant="outlined"
+            value={addAdvertiserText}
+            onChange={(e) => setAddAdvertiserText(e.target.value)}
+            fullWidth
+          />
+        </Grid>
+        <Grid size={2}>
+          <Button onClick={handleAddAdvertiser} variant="contained">
+            広告主追加
+          </Button>
+        </Grid>
+      </Grid>
+      {error && <p>エラーが発生しました</p> }
+      {isLoading && <p>読み込み中...</p>} 
       <AvailableAdvertiserPool advertisers={advertisers} filterText={filterText} />
       <ProgramScheduleGrid
         programList={PROGRAMS}
